@@ -82,6 +82,7 @@ const char *Pool::kUrl                    = "url";
 const char *Pool::kUser                   = "user";
 const char *Pool::kSpendSecretKey         = "spend-secret-key";
 const char *Pool::kNicehashHost           = "nicehash.com";
+const char *Pool::kTari                   = "tari";
 
 
 } // namespace xmrig
@@ -139,6 +140,8 @@ xmrig::Pool::Pool(const rapidjson::Value &object) :
     m_flags.set(FLAG_NICEHASH, Json::getBool(object, kNicehash) || m_url.host().contains(kNicehashHost));
     m_flags.set(FLAG_TLS,      Json::getBool(object, kTls) || m_url.isTLS());
     m_flags.set(FLAG_SNI,      Json::getBool(object, kSni));
+
+    m_rawTemplate = Json::getBool(object, kTari, m_rawTemplate);
 
     setKeepAlive(Json::getValue(object, kKeepalive));
 
@@ -302,6 +305,7 @@ rapidjson::Value xmrig::Pool::toJSON(rapidjson::Document &doc) const
     obj.AddMember(StringRef(kEnabled),      m_flags.test(FLAG_ENABLED), allocator);
     obj.AddMember(StringRef(kTls),          isTLS(), allocator);
     obj.AddMember(StringRef(kSni),          isSNI(), allocator);
+    obj.AddMember(StringRef(kTari),         m_rawTemplate, allocator);
     obj.AddMember(StringRef(kFingerprint),  m_fingerprint.toJSON(), allocator);
     obj.AddMember(StringRef(kDaemon),       m_mode == MODE_DAEMON, allocator);
     obj.AddMember(StringRef(kSOCKS5),       m_proxy.toJSON(doc), allocator);

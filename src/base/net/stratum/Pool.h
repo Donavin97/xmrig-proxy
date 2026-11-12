@@ -76,6 +76,7 @@ public:
     static const char *kSpendSecretKey;
     static const char *kDaemonZMQPort;
     static const char *kNicehashHost;
+    static const char *kTari;
 
     constexpr static int kKeepAliveTimeout         = 60;
     constexpr static uint16_t kDefaultPort         = 3333;
@@ -108,6 +109,7 @@ public:
     inline const String &url() const                    { return m_url.url(); }
     inline const String &user() const                   { return !m_user.isNull() ? m_user : kDefaultUser; }
     inline const String &spendSecretKey() const         { return m_spendSecretKey; }
+    inline bool rawTemplate() const                     { return m_rawTemplate; }
     inline const Url &daemon() const                    { return m_daemon; }
     inline int keepAlive() const                        { return m_keepAlive; }
     inline Mode mode() const                            { return m_mode; }
@@ -151,6 +153,7 @@ private:
 
     Algorithm m_algorithm;
     bool m_submitToOrigin           = false;
+    bool m_rawTemplate              = false;
     Coin m_coin;
     int m_keepAlive                 = 0;
     Mode m_mode                     = MODE_POOL;

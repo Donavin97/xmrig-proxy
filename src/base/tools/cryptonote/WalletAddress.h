@@ -49,6 +49,8 @@ public:
     constexpr static size_t kMinDataSize    = 69;
     constexpr static size_t kMinSize        = 95;
 
+    static constexpr uint64_t kTariMainnetTag = 0x100ULL;
+
     WalletAddress() = default;
     inline WalletAddress(const char *address, size_t size)  { decode(address, size); }
     inline WalletAddress(const char *address)               { decode(address); }
@@ -57,7 +59,8 @@ public:
 
     inline bool decode(const char *address)                 { return decode(address, strlen(address)); }
     inline bool decode(const String &address)               { return decode(address, address.size()); }
-    inline bool isValid() const                             { return m_tag > 0 && m_data.size() >= kMinSize; }
+    inline bool isValid() const                             { return m_tag > 0 && (isTari() || m_data.size() >= kMinSize); }
+    inline bool isTari() const                              { return m_tag == kTariMainnetTag; }
     inline const char *data() const                         { return m_data; }
     inline const Coin &coin() const                         { return tagInfo(m_tag).coin; }
     inline const uint8_t *spendKey() const                  { return m_publicSpendKey; }

@@ -31,8 +31,46 @@
 #include <map>
 
 
+// Tari mainnet network byte is 0x00, which base58-encodes to a leading "1"
+
+static bool isTariAddress(const char *address, size_t size)
+{
+    static constexpr char alphabet[] = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+    if (size < 85 || size > 140 || address[0] != '1') {
+        return false;
+    }
+
+    for (size_t i = 0; i < size; ++i) {
+        const char c = address[i];
+        bool ok = false;
+        for (size_t j = 0; j < sizeof(alphabet) - 1; ++j) {
+            if (alphabet[j] == c) {
+                ok = true;
+                break;
+            }
+        }
+        if (!ok) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
 bool xmrig::WalletAddress::decode(const char *address, size_t size)
 {
+    if (isTariAddress(address, size)) {
+        m_tag = kTariMainnetTag;
+        m_data = { address, size };
+        memset(m_publicSpendKey, 0, sizeof(m_publicSpendKey));
+        memset(m_publicViewKey, 0, sizeof(m_publicViewKey));
+        memset(m_checksum, 0, sizeof(m_checksum));
+
+        return true;
+    }
+
     uint64_t tf_tag = 0;
     if (size >= 4 && !strncmp(address, "TF", 2)) {
       tf_tag = 0x424200;
@@ -260,6 +298,8 @@ const xmrig::WalletAddress::TagInfo &xmrig::WalletAddress::tagInfo(uint64_t tag)
 
         { 0x424220,     { Coin::TOWNFORGE,     STAGENET,   PUBLIC,         38881,  38882 } },
         { 0x424221,     { Coin::TOWNFORGE,     STAGENET,   SUBADDRESS,     38881,  38882 } },
+
+        { kTariMainnetTag, { Coin::TARI,        MAINNET,    PUBLIC,         18081,  18082 } },
 
     };
 
