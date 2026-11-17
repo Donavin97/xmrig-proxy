@@ -29,8 +29,6 @@
 #include <cinttypes>
 
 
-#include "base/io/log/Log.h"
-#include "base/io/log/Tags.h"
 #include "base/tools/Chrono.h"
 #include "core/config/Config.h"
 #include "core/Controller.h"
@@ -212,14 +210,7 @@ bool xmrig::Vardiff::update(Miner *miner, uint64_t now)
 
 void xmrig::Vardiff::resend(Miner *miner, uint64_t diff, uint64_t now)
 {
-    const uint64_t prev = miner->autoDiff();
-
     miner->setAutoDiff(diff);
     miner->setVardiffLastChange(now);
     m_splitter->resendJob(miner);
-
-    if (prev != 0) {
-        LOG_INFO("%s \x1B[01;36m#%" PRId64 "\x1B[0m " WHITE_BOLD("%s") " vardiff " WHITE_BOLD("%" PRIu64) " \x1B[1;30m->\x1B[0m %s%" PRIu64 "\x1B[0m",
-                 Tags::proxy(), miner->id(), miner->ip(), prev, diff > prev ? "\x1B[01;32m" : "\x1B[01;33m", diff);
-    }
 }
