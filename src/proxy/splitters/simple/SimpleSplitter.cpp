@@ -123,6 +123,18 @@ void xmrig::SimpleSplitter::tick(uint64_t ticks)
 }
 
 
+void xmrig::SimpleSplitter::resendJob(Miner *miner)
+{
+    if (miner->routeId() != -1) {
+        return;
+    }
+
+    for (auto const &kv : m_upstreams) {
+        kv.second->resendJob(miner);
+    }
+}
+
+
 #ifdef APP_DEVEL
 void xmrig::SimpleSplitter::printState()
 {

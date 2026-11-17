@@ -268,3 +268,13 @@ void xmrig::SimpleMapper::setJob(const Job &job)
         m_miner->setJob(m_job);
     }
 }
+
+
+void xmrig::SimpleMapper::resendJob(Miner *miner)
+{
+    if (m_miner != miner) {
+        return;
+    }
+
+    m_miner->setJob(m_job);
+}

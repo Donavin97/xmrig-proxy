@@ -87,18 +87,32 @@ public:
     inline State state() const                                    { return m_state; }
     inline uint16_t localPort() const                             { return m_localPort; }
     inline uint64_t customDiff() const                            { return m_customDiff; }
-    inline uint64_t diff() const                                  { return (m_customDiff ? std::min(m_customDiff, m_diff) : m_diff); }
+    inline uint64_t diff() const
+    {
+        if (m_customDiff) return std::min(m_customDiff, m_diff);
+        if (m_autoDiff)   return std::min(m_autoDiff, m_diff);
+        return m_diff;
+    }
+    inline uint64_t poolDiff() const                              { return m_diff; }
+    inline uint64_t autoDiff() const                              { return m_autoDiff; }
     inline uint64_t expire() const                                { return m_expire; }
     inline uint64_t rx() const                                    { return m_rx; }
     inline uint64_t timestamp() const                             { return m_timestamp; }
     inline uint64_t tx() const                                    { return m_tx; }
+    inline uint64_t vardiffLastChange() const                     { return m_vardiffLastChange; }
+    inline uint64_t vardiffLastShare() const                      { return m_vardiffLastShare; }
+    inline double vardiffHashrate() const                         { return m_vardiffHashrate; }
     inline uint8_t fixedByte() const                              { return m_fixedByte; }
     inline void close()                                           { shutdown(true); }
+    inline void setAutoDiff(uint64_t diff)                        { m_autoDiff = diff; }
     inline void setCustomDiff(uint64_t diff)                      { m_customDiff = diff; }
     inline void setExtension(Extension ext, bool enable) noexcept { m_extensions.set(ext, enable); }
     inline void setFixedByte(uint8_t fixedByte)                   { m_fixedByte = fixedByte; }
     inline void setMapperId(ssize_t mapperId)                     { m_mapperId = mapperId; }
     inline void setRouteId(int32_t id)                            { m_routeId = id; }
+    inline void setVardiffHashrate(double hashrate)               { m_vardiffHashrate = hashrate; }
+    inline void setVardiffLastChange(uint64_t ms)                 { m_vardiffLastChange = ms; }
+    inline void setVardiffLastShare(uint64_t ms)                  { m_vardiffLastShare = ms; }
 
 protected:
     inline void onLine(char *line, size_t size) override          { parse(line, size); }
@@ -149,11 +163,15 @@ private:
     Tls *m_tls              = nullptr;
     uint16_t m_localPort;
     uint64_t m_customDiff   = 0;
+    uint64_t m_autoDiff     = 0;
     uint64_t m_diff         = 0;
     uint64_t m_expire;
     uint64_t m_rx           = 0;
     uint64_t m_timestamp;
     uint64_t m_tx           = 0;
+    uint64_t m_vardiffLastChange = 0;
+    uint64_t m_vardiffLastShare  = 0;
+    double m_vardiffHashrate     = 0.0;
     uint8_t m_fixedByte     = 0;
     int64_t m_extraNonce    = -1;
     uintptr_t m_key;

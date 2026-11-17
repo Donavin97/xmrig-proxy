@@ -64,6 +64,7 @@ set(HEADERS
     src/proxy/Stats.h
     src/proxy/StatsData.h
     src/proxy/TickingCounter.h
+    src/proxy/Vardiff.h
     src/proxy/workers/Worker.h
     src/proxy/workers/Workers.h
     src/Summary.h
@@ -107,6 +108,7 @@ set(SOURCES
     src/proxy/splitters/simple/SimpleSplitter.cpp
     src/proxy/splitters/Splitter.cpp
     src/proxy/Stats.cpp
+    src/proxy/Vardiff.cpp
     src/proxy/workers/Worker.cpp
     src/proxy/workers/Workers.cpp
     src/Summary.cpp

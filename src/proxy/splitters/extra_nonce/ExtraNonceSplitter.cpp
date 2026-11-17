@@ -117,6 +117,16 @@ void xmrig::ExtraNonceSplitter::onConfigChanged(Config *config, Config *previous
 }
 
 
+void xmrig::ExtraNonceSplitter::resendJob(Miner *miner)
+{
+    if (miner->mapperId() < 0 || miner->routeId() != -1) {
+        return;
+    }
+
+    m_upstream->resendJob(miner);
+}
+
+
 void xmrig::ExtraNonceSplitter::onEvent(IEvent *event)
 {
     switch (event->type())

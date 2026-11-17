@@ -120,6 +120,12 @@ void xmrig::NonceMapper::remove(const Miner *miner)
 }
 
 
+void xmrig::NonceMapper::resendJob(Miner *miner)
+{
+    m_storage->resendJob(miner);
+}
+
+
 void xmrig::NonceMapper::start()
 {
     connect();

@@ -60,6 +60,7 @@ public:
     void add(Miner *miner);
     void reload(const Pools &pools);
     void remove(const Miner *miner);
+    void resendJob(Miner *miner);
     void reuse(Miner *miner);
     void stop();
     void submit(SubmitEvent *event);

@@ -66,9 +66,14 @@ bool xmrig::Config::read(const IJsonReader &reader, const char *fileName)
     m_customDiffStats = reader.getBool("custom-diff-stats", m_customDiffStats);
     m_debug        = reader.getBool("debug", m_debug);
     m_algoExt      = reader.getBool("algo-ext", m_algoExt);
+    m_vardiff      = reader.getBool("vardiff", m_vardiff);
     m_reuseTimeout = reader.getInt("reuse-timeout", m_reuseTimeout);
     m_accessLog    = reader.getString("access-log-file");
     m_password     = reader.getString("access-password");
+
+    m_vardiffTarget = reader.getUint64("vardiff-target", m_vardiffTarget);
+    m_vardiffMin    = reader.getUint64("vardiff-min", m_vardiffMin);
+    m_vardiffMax    = reader.getUint64("vardiff-max", m_vardiffMax);
 
     setCustomDiff(reader.getUint64("custom-diff", m_diff));
     setMode(reader.getString("mode"));
@@ -130,7 +135,10 @@ void xmrig::Config::getJSON(rapidjson::Document &doc) const
     doc.AddMember(StringRef(kColors),               Log::isColors(), allocator);
     doc.AddMember("custom-diff",                    diff(), allocator);
     doc.AddMember("custom-diff-stats",              m_customDiffStats, allocator);
-    doc.AddMember(StringRef(Pools::kDonateLevel),   m_pools.donateLevel(), allocator);
+    doc.AddMember("vardiff",                        m_vardiff, allocator);
+    doc.AddMember("vardiff-target",                 m_vardiffTarget, allocator);
+    doc.AddMember("vardiff-min",                    m_vardiffMin, allocator);
+    doc.AddMember("vardiff-max",                    m_vardiffMax, allocator);    doc.AddMember(StringRef(Pools::kDonateLevel),   m_pools.donateLevel(), allocator);
     doc.AddMember(StringRef(kLogFile),              m_logFile.toJSON(), allocator);
     doc.AddMember("mode",                           StringRef(modeName()), allocator);
     doc.AddMember(StringRef(Pools::kPools),         m_pools.toJSON(doc), allocator);

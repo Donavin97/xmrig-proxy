@@ -62,6 +62,7 @@ public:
     inline bool isDebug() const                    { return m_debug; }
     inline bool isDonateOverProxy() const          { return m_pools.donateLevel() == 0 || m_mode == SIMPLE_MODE; }
     inline bool isShouldSave() const               { return m_upgrade && isAutoSave(); }
+    inline bool isVardiff() const                  { return m_vardiff; }
     inline const BindHosts &bind() const           { return m_bind; }
     inline const String &accessLog() const         { return m_accessLog; }
     inline const String &password() const          { return m_password; }
@@ -69,6 +70,9 @@ public:
     inline int reuseTimeout() const                { return m_reuseTimeout; }
     inline static IConfig *create()                { return new Config(); }
     inline uint64_t diff() const                   { return m_diff; }
+    inline uint64_t vardiffTarget() const          { return m_vardiffTarget; }
+    inline uint64_t vardiffMin() const             { return m_vardiffMin; }
+    inline uint64_t vardiffMax() const             { return m_vardiffMax; }
     inline Workers::Mode workersMode() const       { return m_workersMode; }
 
 private:
@@ -80,11 +84,15 @@ private:
     bool m_algoExt              = true;
     bool m_customDiffStats      = false;
     bool m_debug                = false;
+    bool m_vardiff              = true;
     int m_mode                  = NICEHASH_MODE;
     int m_reuseTimeout          = 0;
     String m_accessLog;
     String m_password;
     uint64_t m_diff             = 0;
+    uint64_t m_vardiffTarget    = 30;
+    uint64_t m_vardiffMin       = 1000;
+    uint64_t m_vardiffMax       = 0;
     Workers::Mode m_workersMode = Workers::RigID;
 };
 

@@ -101,6 +101,19 @@ void xmrig::ExtraNonceStorage::setJob(const Job &job)
 }
 
 
+void xmrig::ExtraNonceStorage::resendJob(Miner *miner)
+{
+    if (!m_active) {
+        return;
+    }
+
+    Miner *m = this->miner(miner->id());
+    if (m) {
+        m->setJob(m_job, m_extraNonce);
+    }
+}
+
+
 #ifdef APP_DEVEL
 void xmrig::ExtraNonceStorage::printState(size_t id)
 {

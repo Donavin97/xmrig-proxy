@@ -53,6 +53,7 @@ class ProxyDebug;
 class Server;
 class ShareLog;
 class TlsContext;
+class Vardiff;
 class Workers;
 
 
@@ -106,6 +107,7 @@ private:
     Timer *m_timer      = nullptr;
     TlsContext *m_tls   = nullptr;
     uint64_t m_ticks    = 0;
+    Vardiff *m_vardiff;
     Workers *m_workers;
 };
 

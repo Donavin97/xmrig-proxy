@@ -111,6 +111,19 @@ void xmrig::NonceStorage::remove(const Miner *miner)
 }
 
 
+void xmrig::NonceStorage::resendJob(Miner *miner)
+{
+    if (!m_active) {
+        return;
+    }
+
+    Miner *m = this->miner(miner->id());
+    if (m) {
+        m->setJob(m_job);
+    }
+}
+
+
 void xmrig::NonceStorage::reset()
 {
     std::fill(m_used.begin(), m_used.end(), 0);

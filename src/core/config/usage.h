@@ -79,6 +79,11 @@ static inline const std::string &usage()
     u += "  -m, --mode=MODE               proxy mode: nicehash (default), simple or extra_nonce\n";
     u += "      --custom-diff=N           override pool diff\n";
     u += "      --custom-diff-stats       calculate stats using custom diff shares instead of pool shares\n";
+    u += "      --vardiff                 enable automatic per-miner difficulty adjustment (default)\n";
+    u += "      --no-vardiff              disable automatic per-miner difficulty adjustment\n";
+    u += "      --vardiff-target=N        desired seconds between shares per miner (default: 30)\n";
+    u += "      --vardiff-min=N           minimum vardiff difficulty (default: 1000)\n";
+    u += "      --vardiff-max=N           maximum vardiff difficulty, 0 for automatic (default: 0)\n";
     u += "      --reuse-timeout=N         timeout in seconds for reuse pool connections in simple mode\n";
     u += "      --no-workers              disable per worker statistics\n";
     u += "      --access-password=P       set password to restrict connections to the proxy\n";

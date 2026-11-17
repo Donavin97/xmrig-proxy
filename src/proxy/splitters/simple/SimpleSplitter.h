@@ -54,6 +54,7 @@ protected:
     void connect() override;
     void gc() override;
     void printConnections() override;
+    void resendJob(Miner *miner) override;
     void tick(uint64_t ticks) override;
 
 #   ifdef APP_DEVEL

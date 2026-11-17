@@ -32,11 +32,13 @@
 namespace xmrig {
 
 
+class Miner;
+
+
 class Upstreams
 {
 public:
     Upstreams() = default;
-
 
     inline Upstreams(uint64_t active, uint64_t sleep, uint64_t total) :
         active(active),
@@ -76,6 +78,7 @@ public:
     virtual void connect()                   = 0;
     virtual void gc()                        = 0;
     virtual void printConnections()          = 0;
+    virtual void resendJob(Miner *miner)     {}
     virtual void tick(uint64_t ticks)        = 0;
 
 #   ifdef APP_DEVEL

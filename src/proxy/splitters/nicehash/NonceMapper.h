@@ -74,6 +74,7 @@ public:
     void gc();
     void reload(const Pools &pools);
     void remove(const Miner *miner);
+    void resendJob(Miner *miner);
     void start();
     void submit(SubmitEvent *event);
     void tick(uint64_t ticks, uint64_t now);

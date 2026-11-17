@@ -150,6 +150,11 @@ public:
         AlgoExtKey           = 1115,
         ProxyPasswordKey     = 1116,
         LoginFileKey         = 'L',
+        VardiffKey           = 1118,
+        NoVardiffKey         = 1119,
+        VardiffTargetKey     = 1120,
+        VardiffMinKey        = 1121,
+        VardiffMaxKey        = 1122,
 
         // xmrig nvidia
         CudaMaxThreadsKey    = 1200,

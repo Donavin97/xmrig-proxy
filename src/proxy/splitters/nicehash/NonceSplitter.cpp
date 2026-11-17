@@ -111,6 +111,16 @@ void xmrig::NonceSplitter::printConnections()
 }
 
 
+void xmrig::NonceSplitter::resendJob(Miner *miner)
+{
+    if (miner->mapperId() < 0 || miner->routeId() != -1) {
+        return;
+    }
+
+    m_upstreams[miner->mapperId()]->resendJob(miner);
+}
+
+
 void xmrig::NonceSplitter::tick(uint64_t ticks)
 {
     const uint64_t now = Chrono::steadyMSecs();

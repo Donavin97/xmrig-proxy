@@ -50,6 +50,7 @@ public:
     bool isValidJobId(const String &id) const;
     Miner *miner(int64_t id);
     void remove(const Miner *miner);
+    void resendJob(Miner *miner);
     void reset();
     void setJob(const Job &job);
 

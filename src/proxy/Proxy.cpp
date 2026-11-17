@@ -48,6 +48,7 @@
 #include "proxy/Miners.h"
 #include "proxy/ProxyDebug.h"
 #include "proxy/Server.h"
+#include "proxy/Vardiff.h"
 #include "proxy/splitters/donate/DonateSplitter.h"
 #include "proxy/splitters/extra_nonce/ExtraNonceSplitter.h"
 #include "proxy/splitters/nicehash/NonceSplitter.h"
@@ -90,6 +91,7 @@ xmrig::Proxy::Proxy(Controller *controller) :
     }
 
     m_splitter  = splitter;
+    m_vardiff   = new Vardiff(controller, m_miners, splitter);
     m_donate    = new DonateSplitter(controller);
     m_stats     = new Stats(controller);
     m_shareLog  = new ShareLog(controller, m_stats);
@@ -116,6 +118,7 @@ xmrig::Proxy::Proxy(Controller *controller) :
     Events::subscribe(IEvent::LoginType, m_login);
     Events::subscribe(IEvent::LoginType, m_donate);
     Events::subscribe(IEvent::LoginType, &m_customDiff);
+    Events::subscribe(IEvent::LoginType, m_vardiff);
     Events::subscribe(IEvent::LoginType, splitter);
     Events::subscribe(IEvent::LoginType, m_stats);
     Events::subscribe(IEvent::LoginType, m_accessLog);
@@ -126,6 +129,7 @@ xmrig::Proxy::Proxy(Controller *controller) :
     Events::subscribe(IEvent::SubmitType, m_stats);
     Events::subscribe(IEvent::SubmitType, m_workers);
 
+    Events::subscribe(IEvent::AcceptType, m_vardiff);
     Events::subscribe(IEvent::AcceptType, m_stats);
     Events::subscribe(IEvent::AcceptType, m_shareLog);
     Events::subscribe(IEvent::AcceptType, m_workers);
@@ -158,6 +162,7 @@ xmrig::Proxy::~Proxy()
     delete m_shareLog;
     delete m_accessLog;
     delete m_debug;
+    delete m_vardiff;
     delete m_workers;
 
 #   ifdef XMRIG_FEATURE_TLS
@@ -297,5 +302,6 @@ void xmrig::Proxy::tick()
     }
 
     m_splitter->tick(m_ticks);
+    m_vardiff->tick(m_ticks);
     m_workers->tick(m_ticks);
 }

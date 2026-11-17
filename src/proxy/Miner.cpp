@@ -150,8 +150,9 @@ void xmrig::Miner::setJob(Job &job, int64_t extra_nonce)
     m_diff = job.diff();
     bool customDiff = false;
 
-    if (m_customDiff && m_customDiff < m_diff) {
-        const uint64_t t = 0xFFFFFFFFFFFFFFFFULL / m_customDiff;
+    const uint64_t target = diff();
+    if (target && target < m_diff) {
+        const uint64_t t = 0xFFFFFFFFFFFFFFFFULL / target;
         Cvt::toHex(m_sendBuf, 9, reinterpret_cast<const uint8_t *>(&t) + 4, 4);
         customDiff = true;
     }
@@ -261,10 +262,10 @@ bool xmrig::Miner::parseRequest(int64_t id, const char *method, const rapidjson:
             event->setError(Error::InvalidNonce);
         }
 
-        if (event->error() == Error::NoError && m_customDiff && event->request.actualDiff() < m_diff) {
+        if (event->error() == Error::NoError && diff() < m_diff && event->request.actualDiff() < m_diff) {
             success(id, "OK");
 
-            SubmitResult result = SubmitResult(1, m_customDiff, event->request.actualDiff(), event->request.id, 0);
+            SubmitResult result = SubmitResult(1, diff(), event->request.actualDiff(), event->request.id, 0);
             AcceptEvent::start(m_mapperId, this, result, false, true);
 
             return true;

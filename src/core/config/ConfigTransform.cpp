@@ -82,7 +82,16 @@ void xmrig::ConfigTransform::transform(rapidjson::Document &doc, int key, const 
 
     case IConfig::CustomDiffKey: /* --custom-diff */
     case IConfig::ReuseTimeoutKey: /* --reuse-timeout */
+    case IConfig::VardiffTargetKey: /* --vardiff-target */
+    case IConfig::VardiffMinKey: /* --vardiff-min */
+    case IConfig::VardiffMaxKey: /* --vardiff-max */
         return transformUint64(doc, key, static_cast<uint64_t>(strtol(arg, nullptr, 10)));
+
+    case IConfig::VardiffKey: /* --vardiff */
+        return transformBoolean(doc, key, true);
+
+    case IConfig::NoVardiffKey: /* --no-vardiff */
+        return transformBoolean(doc, key, false);
 
     case IConfig::LoginFileKey: /* --login-file */
         return set(doc, "login-file", arg);
@@ -108,6 +117,12 @@ void xmrig::ConfigTransform::transformBoolean(rapidjson::Document &doc, int key,
     case IConfig::AlgoExtKey: /* --no-algo-ext */
         return set(doc, "algo-ext", enable);
 
+    case IConfig::VardiffKey: /* --vardiff */
+        return set(doc, "vardiff", enable);
+
+    case IConfig::NoVardiffKey: /* --no-vardiff */
+        return set(doc, "vardiff", enable);
+
     default:
         break;
     }
@@ -122,6 +137,15 @@ void xmrig::ConfigTransform::transformUint64(rapidjson::Document &doc, int key, 
 
     case IConfig::ReuseTimeoutKey: /* --reuse-timeout */
         return set(doc, "reuse-timeout", arg);
+
+    case IConfig::VardiffTargetKey: /* --vardiff-target */
+        return set(doc, "vardiff-target", arg);
+
+    case IConfig::VardiffMinKey: /* --vardiff-min */
+        return set(doc, "vardiff-min", arg);
+
+    case IConfig::VardiffMaxKey: /* --vardiff-max */
+        return set(doc, "vardiff-max", arg);
 
     default:
         break;
